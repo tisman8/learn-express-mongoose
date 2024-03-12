@@ -28,7 +28,12 @@ AuthorSchema
 });
 
 // Virtual for author's lifespan
-AuthorSchema.virtual('lifespan').get(function() {});
+AuthorSchema.virtual('lifespan').get(function() {
+  // if the author does not have a date of death, that means that they are still alive and
+  // the year after the dash should not be shown.
+  var birth_year = this.date_of_birth.getFullYear();
+  return this.date_of_death ? `${birth_year} - ${this.date_of_death.getFullYear()}` : `${birth_year} - `;
+});
 
 //Export model
 module.exports = mongoose.model('Author', AuthorSchema);
